@@ -43,10 +43,10 @@ func getDatabaseCredentials(jsonCredFile string) (string, string) {
 	defer jsonFile.Close()
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-	// we initialize our Users array
+	// initialize our Users array
 	var credentials Credentials
 
-	// we unmarshal our byteArray which contains our
+	// unmarshal our byteArray which contains our
 	// jsonFile's content into 'users' which we defined above
 	err = json.Unmarshal(byteValue, &credentials)
 	if err != nil {
@@ -54,7 +54,3 @@ func getDatabaseCredentials(jsonCredFile string) (string, string) {
 	}
 	return credentials.Username, credentials.Password
 }
-
-//func addTask(taskInputStr string){
-//
-//}
