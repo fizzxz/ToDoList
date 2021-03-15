@@ -1,4 +1,4 @@
-package toDoList
+package ToDoTask
 
 import (
 	"context"
@@ -28,7 +28,7 @@ func NewToDoTask(taskCategory, taskDescription, taskPriority, taskStartDate, tas
 	}
 }
 
-func insert(db *sql.DB, t toDoTask) error {
+func insertTask(db *sql.DB, t toDoTask) error {
 	query := "INSERT INTO toDoListTest( taskPriority, taskCheck," +
 		"taskDescription, taskCategory, taskStartDate, taskDueDate)" +
 		" VALUES (?, ?, ?, ?, ?, ?)"
