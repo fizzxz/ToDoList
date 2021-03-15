@@ -17,7 +17,7 @@ type toDoTask struct {
 	TaskStartDate   string
 }
 
-func NewToDoList(taskCategory, taskDescription, taskPriority, taskStartDate, taskDueDate string, taskCheck bool) *toDoTask {
+func NewToDoTask(taskCategory, taskDescription, taskPriority, taskStartDate, taskDueDate string, taskCheck bool) *toDoTask {
 	return &toDoTask{
 		TaskCategory:    taskCategory,
 		TaskCheck:       taskCheck,
@@ -43,7 +43,7 @@ func insert(db *sql.DB, t toDoTask) error {
 	res, err := stmt.ExecContext(ctx, t.TaskPriority, t.TaskCheck, t.TaskDescription,
 		t.TaskCategory, t.TaskStartDate, t.TaskDueDate)
 	if err != nil {
-		log.Printf("Error %s when inserting row into products table", err)
+		log.Printf("Error %s when inserting row into toDoListTest table", err)
 		return err
 	}
 	rows, err := res.RowsAffected()
@@ -51,7 +51,7 @@ func insert(db *sql.DB, t toDoTask) error {
 		log.Printf("Error %s when finding rows affected", err)
 		return err
 	}
-	log.Printf("%d products created ", rows)
+	log.Printf("%d toDoTasks created ", rows)
 	return nil
 }
 
