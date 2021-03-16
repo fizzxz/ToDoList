@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -13,11 +14,21 @@ type Credentials struct {
 	Password string `json:"password"`
 }
 
-func OpenMySQLDB(dbUser, dbPass, ipAddr, portNo, dbName string) (*sql.DB, error) {
+func ConnectToDB(ipAddr, portNo, dbName string) (*sql.DB, error) {
+	dbUser, dbPass := getDatabaseCredentials("credentials.json")
+	db, err := openMySQLDB(dbUser, dbPass, ipAddr, portNo, dbName)
+	if err != nil {
+		fmt.Println("issa no openin'") // do something here
+		log.Fatal(err)
+	}
+	return db, err
+}
+
+func openMySQLDB(dbUser, dbPass, ipAddr, portNo, dbName string) (*sql.DB, error) {
 	return sql.Open("mysql", dbUser+":"+dbPass+"@tcp("+ipAddr+":"+portNo+")/"+dbName)
 }
 
-func GetDatabaseCredentials(jsonCredFile string) (string, string) {
+func getDatabaseCredentials(jsonCredFile string) (string, string) {
 	// Open our jsonFile
 	jsonFile, err := os.Open(jsonCredFile)
 	// if we os.Open returns an error then handle it

@@ -11,7 +11,7 @@ docker run --name test-mysql -p 3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysq
 #		primary key,
 #	taskPriority int null,
 #	taskCheck tinyint(1) null,
-#	taskDescription char null,
+#	taskDescription text null,
 #	taskCategory text null,
 #	taskStartDate datetime null,
 #	taskDueDate datetime null
