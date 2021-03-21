@@ -77,7 +77,6 @@ func (t *toDoTaskDB) InsertTask(toDoTaskObj *ToDoTask.ToDoTask) error {
 
 }
 
-// FindByID attaches the user repository and find data based on id
 func (t *toDoTaskDB) FindByID(id int) (*ToDoTask.ToDoTask, error) {
 	task := new(ToDoTask.ToDoTask)
 
@@ -96,7 +95,6 @@ func (t *toDoTaskDB) FindByID(id int) (*ToDoTask.ToDoTask, error) {
 	return task, nil
 }
 
-// Find attaches the user repository and find all data
 func (t *toDoTaskDB) Find() ([]*ToDoTask.ToDoTask, error) {
 	tasks := make([]*ToDoTask.ToDoTask, 0)
 
