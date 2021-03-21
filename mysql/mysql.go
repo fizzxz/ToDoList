@@ -17,7 +17,6 @@ type Credentials struct {
 	Password string `json:"password"`
 }
 
-//represent the toDoTaskDB model
 type toDoTaskDB struct {
 	db *sql.DB
 }
