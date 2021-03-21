@@ -13,7 +13,7 @@ func main() {
 
 	db, err := mysql.ConnectToDB("172.17.0.2", "3306", "mysqlTest")
 	if err != nil {
-		fmt.Println("issa no openin'") // do something here
+		fmt.Println("Failed to open db")
 		log.Fatal(err)
 	}
 	currTime := time.Now().String()
@@ -31,9 +31,8 @@ func main() {
 	}
 	err = db.Ping()
 	if err != nil {
-		fmt.Println("issa no pinging") // do something here
+		fmt.Println("Failed to ping") // do something here
 	}
 
 	defer db.Close()
-	fmt.Println("issa :ok:")
 }

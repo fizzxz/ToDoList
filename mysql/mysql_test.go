@@ -17,7 +17,7 @@ var tdTask = &ToDoTask.ToDoTask{
 	TaskDescription: "This is a task that needs to be completed",
 	TaskPriority:    0,
 	TaskStartDate:   time.Now().String(),
-	TaskDueDate:     "2020-01-01 10:10:10",
+	TaskDueDate:     "2022-01-01 10:10:10",
 }
 
 func NewMock() (*sql.DB, sqlmock.Sqlmock) {
