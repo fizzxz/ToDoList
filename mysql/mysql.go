@@ -130,6 +130,40 @@ func (t *toDoTaskDB) Find() ([]*ToDoTask.ToDoTask, error) {
 	return tasks, nil
 }
 
-func (toDoTaskDB *toDoTaskDB) Close() {
-	toDoTaskDB.db.Close()
+func (t *toDoTaskDB) Update(toDoTaskObj *ToDoTask.ToDoTask) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	query := "UPDATE toDoListTest SET taskCategory = ?, taskCheck = ?, taskDescription = ?, " +
+		"taskPriority = ?, taskStartDate = ?, taskDueDate = ? " +
+		"WHERE taskID = ?"
+	stmt, err := t.db.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, toDoTaskObj.TaskCategory, toDoTaskObj.TaskCheck,
+		toDoTaskObj.TaskDescription, toDoTaskObj.TaskPriority, toDoTaskObj.TaskStartDate,
+		toDoTaskObj.TaskDueDate, toDoTaskObj.TaskID)
+	return err
+}
+
+func (t *toDoTaskDB) Delete(taskID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	query := "DELETE FROM toDoListTest WHERE taskID = ?"
+	stmt, err := t.db.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, taskID)
+	return err
+}
+
+func (t *toDoTaskDB) Close() {
+	t.db.Close()
 }

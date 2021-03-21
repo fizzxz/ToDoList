@@ -135,3 +135,76 @@ func TestFind(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Len(t, tasks, 1)
 }
+
+func TestUpdate(t *testing.T) {
+	db, mock := NewMock()
+	tdDB := &toDoTaskDB{db}
+	defer func() {
+		tdDB.Close()
+	}()
+
+	query := "UPDATE toDoListTest SET taskCategory = ?, taskCheck = ?, taskDescription = ?, " +
+		"taskPriority = ?, taskStartDate = ?, taskDueDate = ? " +
+		"WHERE taskID = ?"
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(tdTask.TaskCategory, tdTask.TaskCheck,
+		tdTask.TaskDescription, tdTask.TaskPriority, tdTask.TaskStartDate,
+		tdTask.TaskDueDate, tdTask.TaskID).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	err := tdDB.Update(tdTask)
+	assert.NoError(t, err)
+}
+
+func TestUpdateErr(t *testing.T) {
+	db, mock := NewMock()
+	tdDB := &toDoTaskDB{db}
+	defer func() {
+		tdDB.Close()
+	}()
+
+	//the error is the table name
+	query := "UPDATE toDoTest SET taskCategory = ?, taskCheck = ?, taskDescription = ?, " +
+		"taskPriority = ?, taskStartDate = ?, taskDueDate = ? " +
+		"WHERE taskID = ?"
+
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(tdTask.TaskCategory, tdTask.TaskCheck,
+		tdTask.TaskDescription, tdTask.TaskPriority, tdTask.TaskStartDate,
+		tdTask.TaskDueDate, tdTask.TaskID).WillReturnResult(sqlmock.NewResult(0, 0))
+
+	err := tdDB.Update(tdTask)
+	assert.Error(t, err)
+}
+
+func TestDelete(t *testing.T) {
+	db, mock := NewMock()
+	tdDB := &toDoTaskDB{db}
+	defer func() {
+		tdDB.Close()
+	}()
+
+	query := "DELETE FROM toDoListTest WHERE taskID = ?"
+
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(tdTask.TaskID).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	err := tdDB.Delete(tdTask.TaskID)
+	assert.NoError(t, err)
+}
+
+func TestDeleteError(t *testing.T) {
+	db, mock := NewMock()
+	tdDB := &toDoTaskDB{db}
+	defer func() {
+		tdDB.Close()
+	}()
+
+	//the error is the table name
+	query := "DELETE FROM toDoTest WHERE taskID = ?"
+
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(tdTask.TaskID).WillReturnResult(sqlmock.NewResult(0, 0))
+
+	err := tdDB.Delete(tdTask.TaskID)
+	assert.Error(t, err)
+}
